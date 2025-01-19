@@ -1,17 +1,17 @@
 package br.com.appforge.kotlindelivery
 
-import android.app.ActivityManager
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
+import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
 
-class MainActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     private val binding by lazy{
-        ActivityMainBinding.inflate(layoutInflater)
+        ActivityRegisterBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
+        initializeToolbar()
     }
 
+    private fun initializeToolbar() {
+        val toolbar = binding.includeTbMain.tbMain
+        setSupportActionBar(toolbar)
 
+        supportActionBar?.apply {
+            title = "Register User"
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
 }

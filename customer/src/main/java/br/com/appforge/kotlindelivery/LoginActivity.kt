@@ -1,17 +1,18 @@
 package br.com.appforge.kotlindelivery
 
-import android.app.ActivityManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private val binding by lazy{
-        ActivityMainBinding.inflate(layoutInflater)
+        ActivityLoginBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
+        initializeClickEvents()
     }
 
-
+    private fun initializeClickEvents() {
+        binding.textRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+    }
 }
