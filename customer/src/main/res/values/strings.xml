@@ -6,4 +6,9 @@
     <string name="satisfy_your_hunter">It won\'t be long before you satisfy your hunger</string>
     <string name="type_your_email">Type your e-mail</string>
     <string name="type_your_password">Type your password</string>
+    <string name="error_register_name">Type a valid name, minimum of 6 characters</string>
+    <string name="error_register_email">Type a valid e-mail</string>
+    <string name="error_register_password">Type a strong password, you need to have at least 1 uppercase, 1 lowercase and 1 number, and minimum of 6 digits</string>
+    <string name="error_register_phone">Type a valid phone</string>
+
 </resources>

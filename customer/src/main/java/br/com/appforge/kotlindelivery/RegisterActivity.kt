@@ -3,11 +3,14 @@ package br.com.appforge.kotlindelivery
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
 import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
+import br.com.appforge.kotlindelivery.domain.model.User
+import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
@@ -20,6 +23,8 @@ class RegisterActivity : AppCompatActivity() {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
 
+    private val authenticationViewModel:AuthenticationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -29,6 +34,18 @@ class RegisterActivity : AppCompatActivity() {
     private fun initialize() {
         initializeToolbar()
         initializeClickEvents()
+        initializeObservables()
+    }
+
+    private fun initializeObservables() {
+        authenticationViewModel.validationResult.observe(this){ validationResult ->
+            with(binding){
+                editRegisterName.error = if(validationResult.name) null else getString(R.string.error_register_name)
+                editRegisterEmail.error = if(validationResult.email) null else getString(R.string.error_register_email)
+                editRegisterPassword.error = if(validationResult.password) null else getString(R.string.error_register_password)
+                editRegisterPhone.error = if(validationResult.phone) null else getString(R.string.error_register_phone)
+            }
+        }
     }
 
     private fun initializeClickEvents() {
@@ -39,28 +56,10 @@ class RegisterActivity : AppCompatActivity() {
                 val password = editRegisterPassword.text.toString()
                 val phone = editRegisterPhone.text.toString()
 
-                val nameValidation = name.validator()
-                    .minLength(6)
-                    .maxLength(50)
-                    .check()
-
-                val emailValidation = email.validator()
-                    .validEmail()
-                    .check()
-
-                val passwordValidation = password.validator()
-                    .minLength(6)
-                    .atleastOneUpperCase()
-                    .atleastOneLowerCase()
-                    .atleastOneNumber()
-                    .check()
-
-                val phoneValidation = phone.validator()
-                    .minLength(14)
-                    .check()
-
-                Log.i("info_validation", "name($nameValidation) email($emailValidation) pass($passwordValidation) phone($phoneValidation) ")
-
+                val user = User(
+                    email,password,name,phone
+                )
+                authenticationViewModel.registerUser(user)
             }
         }
     }

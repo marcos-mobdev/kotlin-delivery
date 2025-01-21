@@ -3,11 +3,14 @@ package br.com.appforge.kotlindelivery
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
+import br.com.appforge.kotlindelivery.domain.model.User
+import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
+    private val authenticationViewModel:AuthenticationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -25,11 +30,34 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initialize() {
         initializeClickEvents()
+        initializeObservables()
+    }
+
+    private fun initializeObservables() {
+        authenticationViewModel.validationResult.observe(this){ validationResult ->
+            with(binding){
+                editLoginEmail.error = if(validationResult.email) null else getString(R.string.error_register_email)
+                editLoginPassword.error = if(validationResult.password) null else getString(R.string.error_register_password)
+            }
+        }
     }
 
     private fun initializeClickEvents() {
-        binding.textRegister.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+
+        with(binding){
+            textRegister.setOnClickListener {
+                startActivity(Intent(applicationContext, RegisterActivity::class.java))
+            }
+            btnLogin.setOnClickListener {
+                val email = editLoginEmail.text.toString()
+                val password = editLoginPassword.text.toString()
+                val user = User(
+                    email = email,
+                    password = password
+                )
+                authenticationViewModel.loginUser(user)
+            }
         }
+
     }
 }
