@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.googleServices)
-
+    alias(libs.plugins.daggerHilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -52,6 +53,22 @@ dependencies {
     //Mask
     implementation(libs.maskededittext)
 
+    //Validation
+    implementation(libs.easyvalidation.core)
+    implementation (libs.easyvalidation.toast) //toast for validation error
+
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Architecture
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    //Kotlin KTX
+    implementation(libs.androidx.core.ktx)
+
+
 
     //Navigation Component
     implementation(libs.androidx.navigation.fragment)
@@ -65,4 +82,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+kapt{
+    correctErrorTypes = true
 }
