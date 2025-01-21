@@ -1,12 +1,15 @@
 package br.com.appforge.kotlindelivery
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
 import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
 import br.com.appforge.kotlindelivery.domain.model.User
@@ -37,6 +40,10 @@ class RegisterActivity : AppCompatActivity() {
         initializeObservables()
     }
 
+    fun navigateToMain(){
+        startActivity(Intent(this,MainActivity::class.java))
+    }
+
     private fun initializeObservables() {
         authenticationViewModel.validationResult.observe(this){ validationResult ->
             with(binding){
@@ -44,6 +51,15 @@ class RegisterActivity : AppCompatActivity() {
                 editRegisterEmail.error = if(validationResult.email) null else getString(R.string.error_register_email)
                 editRegisterPassword.error = if(validationResult.password) null else getString(R.string.error_register_password)
                 editRegisterPhone.error = if(validationResult.phone) null else getString(R.string.error_register_phone)
+            }
+        }
+
+        authenticationViewModel.success.observe(this){success->
+            if(success){
+                //Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show()
+                navigateToMain()
+            }else{
+                showMessage("Error while registering user")
             }
         }
     }

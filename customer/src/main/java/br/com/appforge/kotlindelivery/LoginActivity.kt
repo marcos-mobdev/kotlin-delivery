@@ -2,6 +2,7 @@ package br.com.appforge.kotlindelivery
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,11 +34,23 @@ class LoginActivity : AppCompatActivity() {
         initializeObservables()
     }
 
+    fun navigateToMain(){
+        startActivity(Intent(this,MainActivity::class.java))
+    }
+
     private fun initializeObservables() {
         authenticationViewModel.validationResult.observe(this){ validationResult ->
             with(binding){
                 editLoginEmail.error = if(validationResult.email) null else getString(R.string.error_register_email)
                 editLoginPassword.error = if(validationResult.password) null else getString(R.string.error_register_password)
+            }
+        }
+        authenticationViewModel.success.observe(this){success->
+            if(success){
+                //Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                navigateToMain()
+            }else{
+                Toast.makeText(this, "Login error", Toast.LENGTH_SHORT).show()
             }
         }
     }

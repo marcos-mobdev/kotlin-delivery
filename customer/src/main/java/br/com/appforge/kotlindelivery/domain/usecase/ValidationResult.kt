@@ -6,4 +6,10 @@ data class ValidationResult(
     var password: Boolean = false,
     var phone: Boolean = false,
 
-)
+){
+    val validationRegisterSuccess: Boolean
+        get() = name && email && password && phone
+
+    val validationLoginSuccess: Boolean
+        get() = email && password
+}
