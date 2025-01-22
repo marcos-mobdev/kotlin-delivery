@@ -1,23 +1,15 @@
-package br.com.appforge.kotlindelivery
+package br.com.appforge.kotlindelivery.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.showMessage
-import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
+import br.com.appforge.kotlindelivery.R
 import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
-import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
-import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
-import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,7 +38,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun navigateToMain(){
-        startActivity(Intent(this,MainActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun initializeObservables() {

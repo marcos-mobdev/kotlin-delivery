@@ -1,4 +1,4 @@
-package br.com.appforge.kotlindelivery
+package br.com.appforge.kotlindelivery.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import br.com.appforge.core.LoadingAlert
+import br.com.appforge.core.navigateTo
 import br.com.appforge.core.showMessage
+import br.com.appforge.kotlindelivery.R
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.math.log
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -31,8 +33,11 @@ class LoginActivity : AppCompatActivity() {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition{
             //Check if user is logged in
-
+            val loggedUser = authenticationViewModel.checkUserLoggedIn()
             //result
+            if(loggedUser){
+                navigateTo(MainActivity::class.java)
+            }
             false
         }
 
@@ -52,10 +57,6 @@ class LoginActivity : AppCompatActivity() {
         initializeObservables()
     }
 
-    fun navigateToMain(){
-        startActivity(Intent(this,MainActivity::class.java))
-    }
-
     private fun initializeObservables() {
         authenticationViewModel.validationResult.observe(this){ validationResult ->
             with(binding){
@@ -66,15 +67,9 @@ class LoginActivity : AppCompatActivity() {
         authenticationViewModel.success.observe(this){success->
             if(success){
                 //Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                navigateToMain()
+                navigateTo(MainActivity::class.java)
             }else{
                 showMessage("Login error")
-            }
-        }
-
-        authenticationViewModel.isUserLoggedIn.observe(this){isUserLoggedIn->
-            if(isUserLoggedIn){
-                navigateToMain()
             }
         }
 

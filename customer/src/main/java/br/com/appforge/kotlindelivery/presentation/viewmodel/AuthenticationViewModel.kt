@@ -24,9 +24,6 @@ class AuthenticationViewModel @Inject constructor(
     private val _success = MutableLiveData<Boolean>()
     val success : LiveData<Boolean> get() = _success
 
-    private val _isUserLoggedIn = MutableLiveData<Boolean>()
-    val isUserLoggedIn : LiveData<Boolean> get() = _isUserLoggedIn
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading : LiveData<Boolean> get() = _isLoading
 
@@ -60,15 +57,7 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun checkUserLoggedIn(){
-        _isLoading.value = true
-            viewModelScope.launch {
-                val result = authenticationRepositoryImpl.isUserLoggedIn()
-                _isUserLoggedIn.postValue(result)
-                _isLoading.value = false
-            }
-
+    fun checkUserLoggedIn():Boolean{
+        return authenticationRepositoryImpl.isUserLoggedIn()
     }
-
-
 }

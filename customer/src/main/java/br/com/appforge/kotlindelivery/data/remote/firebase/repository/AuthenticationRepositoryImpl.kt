@@ -20,7 +20,7 @@ class AuthenticationRepositoryImpl@Inject constructor(
             .await() != null
     }
 
-    override suspend fun isUserLoggedIn(): Boolean {
+    override fun isUserLoggedIn(): Boolean {
         return firebaseAuth.currentUser != null
     }
 
