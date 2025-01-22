@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
@@ -26,10 +27,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition{
+            //Check if user is logged in
+
+            //result
+            false
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
-        FirebaseAuth.getInstance().signOut()
+        //FirebaseAuth.getInstance().signOut()
     }
 
     override fun onStart() {

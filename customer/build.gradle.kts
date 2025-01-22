@@ -43,6 +43,22 @@ android {
 
 dependencies {
 
+    //SplashScreen
+    implementation(libs.androidx.core.splashscreen)
+
+    //Architecture
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    //Kotlin KTX
+    implementation(libs.androidx.core.ktx)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(project(":core"))
+    kapt(libs.hilt.android.compiler)
+
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
@@ -56,20 +72,6 @@ dependencies {
     //Validation
     implementation(libs.easyvalidation.core)
     implementation (libs.easyvalidation.toast) //toast for validation error
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(project(":core"))
-    kapt(libs.hilt.android.compiler)
-
-    //Architecture
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    //Kotlin KTX
-    implementation(libs.androidx.core.ktx)
-
-
 
     //Navigation Component
     implementation(libs.androidx.navigation.fragment)
