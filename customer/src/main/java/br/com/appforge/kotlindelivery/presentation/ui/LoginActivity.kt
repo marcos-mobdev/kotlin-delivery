@@ -89,13 +89,13 @@ class LoginActivity : AppCompatActivity() {
                     email = email,
                     password = password
                 )
-                authenticationViewModel.loginUser(user){ uistatus ->
-                    when(uistatus){
+                authenticationViewModel.loginUser(user){ uistate ->
+                    when(uistate){
                         is UIState.Success -> {
                             navigateTo(MainActivity::class.java)
                         }
                         is UIState.Error ->{
-                            showMessage(uistatus.errorMessage)
+                            showMessage(uistate.errorMessage)
                         }
                     }
 

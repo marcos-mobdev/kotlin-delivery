@@ -22,13 +22,10 @@ class AuthenticationViewModel @Inject constructor(
     private val _validationResult = MutableLiveData<ValidationResult>()
     val validationResult : LiveData<ValidationResult> get() = _validationResult
 
-    private val _success = MutableLiveData<Boolean>()
-    val success : LiveData<Boolean> get() = _success
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading : LiveData<Boolean> get() = _isLoading
 
-    fun registerUser(user:User){
+    fun registerUser(user:User, uiState:(UIState<Boolean>)->Unit){
         //Check user data
         val validationReturn = authenticationUseCase.validateUserRegister(user)
         _validationResult.value = validationReturn
@@ -36,8 +33,7 @@ class AuthenticationViewModel @Inject constructor(
         if(validationReturn.validationRegisterSuccess ){
             _isLoading.value = true
             viewModelScope.launch {
-                val result = authenticationRepositoryImpl.registerUser(user)
-                _success.postValue(result)
+                authenticationRepositoryImpl.registerUser(user,uiState)
                 _isLoading.value = false
             }
         }

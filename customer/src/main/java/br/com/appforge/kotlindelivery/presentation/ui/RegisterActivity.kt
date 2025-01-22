@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import br.com.appforge.core.LoadingAlert
+import br.com.appforge.core.UIState
+import br.com.appforge.core.navigateTo
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.R
 import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
@@ -51,15 +53,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        authenticationViewModel.success.observe(this){success->
-            if(success){
-                //Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show()
-                navigateToMain()
-            }else{
-                showMessage("Error while registering user")
-            }
-        }
-
         authenticationViewModel.isLoading.observe(this){isLoading->
             if(isLoading){
                 loadingAlert.show("Registering your profile...")
@@ -81,7 +74,16 @@ class RegisterActivity : AppCompatActivity() {
                 val user = User(
                     email,password,name,phone
                 )
-                authenticationViewModel.registerUser(user)
+                authenticationViewModel.registerUser(user){ uistate ->
+                    when(uistate){
+                        is UIState.Success -> {
+                            navigateTo(MainActivity::class.java)
+                        }
+                        is UIState.Error ->{
+                            showMessage(uistate.errorMessage)
+                        }
+                    }
+                }
             }
         }
     }
