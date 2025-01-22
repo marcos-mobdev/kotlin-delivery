@@ -6,12 +6,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import br.com.appforge.core.LoadingAlert
+import br.com.appforge.core.UIState
 import br.com.appforge.core.navigateTo
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.R
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
@@ -44,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
-        //FirebaseAuth.getInstance().signOut()
+        FirebaseAuth.getInstance().signOut()
     }
 
     override fun onStart() {
@@ -62,14 +64,6 @@ class LoginActivity : AppCompatActivity() {
             with(binding){
                 editLoginEmail.error = if(validationResult.email) null else getString(R.string.error_register_email)
                 editLoginPassword.error = if(validationResult.password) null else getString(R.string.error_register_password)
-            }
-        }
-        authenticationViewModel.success.observe(this){success->
-            if(success){
-                //Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                navigateTo(MainActivity::class.java)
-            }else{
-                showMessage("Login error")
             }
         }
 
@@ -96,7 +90,17 @@ class LoginActivity : AppCompatActivity() {
                     email = email,
                     password = password
                 )
-                authenticationViewModel.loginUser(user)
+                authenticationViewModel.loginUser(user){ uistatus ->
+                    when(uistatus){
+                        is UIState.Success -> {
+                            navigateTo(MainActivity::class.java)
+                        }
+                        is UIState.Error ->{
+                            showMessage(uistatus.errorMessage)
+                        }
+                    }
+
+                }
             }
         }
 

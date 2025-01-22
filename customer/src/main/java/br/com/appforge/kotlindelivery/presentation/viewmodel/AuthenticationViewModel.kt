@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.appforge.core.UIState
 import br.com.appforge.kotlindelivery.data.remote.firebase.repository.IAuthenticationRepository
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.domain.usecase.AuthenticationUseCase
@@ -42,7 +43,7 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun loginUser(user:User){
+    fun loginUser(user:User, uiState:(UIState<Boolean>)->Unit){
         //Check user data
         val validationReturn = authenticationUseCase.validateUserLogin(user)
         _validationResult.value = validationReturn
@@ -50,8 +51,7 @@ class AuthenticationViewModel @Inject constructor(
         if(validationReturn.validationLoginSuccess ){
             _isLoading.value = true
             viewModelScope.launch {
-                val result = authenticationRepositoryImpl.loginUser(user)
-                _success.postValue(result)
+                authenticationRepositoryImpl.loginUser(user, uiState)
                 _isLoading.value = false
             }
         }
