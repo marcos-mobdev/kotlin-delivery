@@ -2,16 +2,14 @@ package br.com.appforge.kotlindelivery
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import br.com.appforge.core.LoadingAlert
+import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
-import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,10 +21,20 @@ class LoginActivity : AppCompatActivity() {
 
     private val authenticationViewModel:AuthenticationViewModel by viewModels()
 
+    private val loadingAlert by lazy {
+        LoadingAlert(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
+        FirebaseAuth.getInstance().signOut()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        authenticationViewModel.checkUserLoggedIn()
     }
 
     private fun initialize() {
@@ -50,7 +58,22 @@ class LoginActivity : AppCompatActivity() {
                 //Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                 navigateToMain()
             }else{
-                Toast.makeText(this, "Login error", Toast.LENGTH_SHORT).show()
+                showMessage("Login error")
+            }
+        }
+
+        authenticationViewModel.isUserLoggedIn.observe(this){isUserLoggedIn->
+            if(isUserLoggedIn){
+                navigateToMain()
+            }
+        }
+
+        authenticationViewModel.isLoading.observe(this){isLoading->
+            if(isLoading){
+                loadingAlert.show("Logging in with your credentials...")
+
+            }else{
+                loadingAlert.close()
             }
         }
     }

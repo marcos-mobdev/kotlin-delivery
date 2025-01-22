@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.databinding.ActivityMainBinding
 import br.com.appforge.kotlindelivery.databinding.ActivityRegisterBinding
@@ -27,6 +28,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private val authenticationViewModel:AuthenticationViewModel by viewModels()
+
+    private val loadingAlert by lazy {
+        LoadingAlert(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,15 @@ class RegisterActivity : AppCompatActivity() {
                 navigateToMain()
             }else{
                 showMessage("Error while registering user")
+            }
+        }
+
+        authenticationViewModel.isLoading.observe(this){isLoading->
+            if(isLoading){
+                loadingAlert.show("Registering your profile...")
+
+            }else{
+               loadingAlert.close()
             }
         }
     }
