@@ -20,14 +20,15 @@ class LoadingAlert (
             .setCancelable(false)
 
         alertDialog = alertBuilder.create()
+
         alertDialog?.show()
 
     }
     fun close(){
-        alertDialog?.dismiss()
         alertDialog?.setOnDismissListener {
             val viewGroup = viewLoading.parent as ViewGroup
             viewGroup.removeView(viewLoading)
         }
+        alertDialog?.dismiss()
     }
 }

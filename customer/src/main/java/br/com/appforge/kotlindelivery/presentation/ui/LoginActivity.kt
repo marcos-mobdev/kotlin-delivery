@@ -70,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
         authenticationViewModel.isLoading.observe(this){isLoading->
             if(isLoading){
                 loadingAlert.show("Logging in with your credentials...")
-
             }else{
                 loadingAlert.close()
             }
