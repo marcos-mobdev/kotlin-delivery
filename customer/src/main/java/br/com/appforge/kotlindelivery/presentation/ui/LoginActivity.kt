@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.UIState
+import br.com.appforge.core.hideKeyboard
 import br.com.appforge.core.navigateTo
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.R
@@ -82,7 +83,17 @@ class LoginActivity : AppCompatActivity() {
             textRegister.setOnClickListener {
                 startActivity(Intent(applicationContext, RegisterActivity::class.java))
             }
-            btnLogin.setOnClickListener {
+
+            //editLoginEmail.requestFocus()
+
+            btnLogin.setOnClickListener {view->
+
+                view.hideKeyboard()
+
+                //Remove Focus
+                editLoginEmail.clearFocus()
+                editLoginPassword.clearFocus()
+
                 val email = editLoginEmail.text.toString()
                 val password = editLoginPassword.text.toString()
                 val user = User(

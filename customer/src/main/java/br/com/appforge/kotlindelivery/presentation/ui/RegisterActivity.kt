@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.UIState
+import br.com.appforge.core.hideKeyboard
 import br.com.appforge.core.navigateTo
 import br.com.appforge.core.showMessage
 import br.com.appforge.kotlindelivery.R
@@ -65,7 +66,17 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun initializeClickEvents() {
         with(binding){
-            btnRegister.setOnClickListener {
+            btnRegister.setOnClickListener { view->
+
+                view.hideKeyboard()
+
+                //Remove Focus
+                editRegisterName.clearFocus()
+                editRegisterEmail.clearFocus()
+                editRegisterPassword.clearFocus()
+                editRegisterPhone.clearFocus()
+
+
                 val name = editRegisterName.text.toString()
                 val email = editRegisterEmail.text.toString()
                 val password = editRegisterPassword.text.toString()

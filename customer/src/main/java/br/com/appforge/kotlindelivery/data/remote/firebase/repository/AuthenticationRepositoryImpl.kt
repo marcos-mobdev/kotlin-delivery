@@ -15,8 +15,8 @@ class AuthenticationRepositoryImpl @Inject constructor(
 ) : IAuthenticationRepository {
     override suspend fun registerUser(
         user: User,
-        uiStatus:(UIState<Boolean>)->Unit
-        ){
+        uiStatus: (UIState<Boolean>) -> Unit
+    ) {
 
         try {
             val result =
@@ -39,14 +39,12 @@ class AuthenticationRepositoryImpl @Inject constructor(
             uiStatus.invoke(
                 UIState.Error("E-mail address is malformed.")
             )
-        }
-        catch (userCollisionError: FirebaseAuthUserCollisionException) {
+        } catch (userCollisionError: FirebaseAuthUserCollisionException) {
             userCollisionError.printStackTrace()
             uiStatus.invoke(
                 UIState.Error("Account is already registered.")
             )
-        }
-        catch (defaultError: Exception) {
+        } catch (defaultError: Exception) {
             defaultError.printStackTrace()
             uiStatus.invoke(
                 UIState.Error("Couldn't register the user. Try again later.")
