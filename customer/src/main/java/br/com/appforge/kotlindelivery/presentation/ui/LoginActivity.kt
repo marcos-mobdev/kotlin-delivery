@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.widget.addTextChangedListener
 import br.com.appforge.core.LoadingAlert
 import br.com.appforge.core.UIState
 import br.com.appforge.core.hideKeyboard
@@ -14,6 +15,7 @@ import br.com.appforge.kotlindelivery.R
 import br.com.appforge.kotlindelivery.databinding.ActivityLoginBinding
 import br.com.appforge.kotlindelivery.domain.model.User
 import br.com.appforge.kotlindelivery.presentation.viewmodel.AuthenticationViewModel
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
@@ -47,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
-        FirebaseAuth.getInstance().signOut()
+        //FirebaseAuth.getInstance().signOut()
     }
 
     override fun onStart() {
@@ -109,7 +111,6 @@ class LoginActivity : AppCompatActivity() {
                             showMessage(uistate.errorMessage)
                         }
                     }
-
                 }
             }
         }
