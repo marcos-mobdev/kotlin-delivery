@@ -10,5 +10,7 @@
     <string name="error_register_email">Type a valid e-mail</string>
     <string name="error_register_password">Type a strong password, you need to have at least 1 uppercase, 1 lowercase and 1 number, and minimum of 6 digits</string>
     <string name="error_register_phone">Type a valid phone</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
